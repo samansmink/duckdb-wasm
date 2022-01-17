@@ -809,14 +809,14 @@ arrow::Status WebDB::SetFileDescriptor(uint32_t file_id, uint32_t fd) {
 arrow::Result<std::string> WebDB::GlobFileInfos(std::string_view expression) {
     auto web_fs = io::WebFileSystem::Get();
     if (!web_fs) return arrow::Status::Invalid("WebFileSystem is not configured");
-
     auto files = web_fs->Glob(std::string{expression});
+    auto current_epoch = web_fs->CacheEpoch();
+
     rapidjson::Document doc;
     doc.SetArray();
     auto& allocator = doc.GetAllocator();
     for (auto& file : files) {
-        // TODO validate if passing 0 as epoch here is correct
-        auto value = web_fs->WriteFileInfo(doc, file, 0);
+        auto value = web_fs->WriteFileInfo(doc, file, current_epoch-1);
         if (!value.IsNull()) doc.PushBack(value, allocator);
     }
     rapidjson::StringBuffer strbuf;

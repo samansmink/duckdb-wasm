@@ -84,8 +84,6 @@ WebDBConfig WebDBConfig::ReadFrom(std::string_view args_json) {
                 config.filesystem.allow_full_http_reads = fs["allowFullHTTPReads"].GetBool();
             }
         }
-
-        // TODO setting S3 params should be handled here, we cannot set them directly.
     }
     if (!config.query.cast_bigint_to_double.has_value()) {
         config.query.cast_bigint_to_double = !duckdb_web_test_platform_feature(PlatformFeature::BIGINT64ARRAY);

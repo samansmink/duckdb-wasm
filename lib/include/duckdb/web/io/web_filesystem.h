@@ -157,7 +157,7 @@ class WebFileSystem : public duckdb::FileSystem {
     std::unordered_map<uint32_t, std::unique_ptr<ReadAheadBuffer>> readahead_buffers_ = {};
     /// The file statistics
     std::shared_ptr<io::FileStatisticsRegistry> file_statistics_;
-    /// Cache epoch for synchronization of the FileInfoCache in JS
+    /// Cache epoch for synchronization of JS caches
     std::atomic<uint32_t> cache_epoch_ = 1;
 
     /// Allocate a file id.
@@ -177,7 +177,8 @@ class WebFileSystem : public duckdb::FileSystem {
 
     /// Get the config
     auto Config() const { return config_; }
-
+    /// Get the current cache epoch
+    auto CacheEpoch() const { return cache_epoch_.load(); }
     /// Get a file info as JSON string
     inline WebFile *GetFile(uint32_t file_id) const {
         return files_by_id_.count(file_id) ? files_by_id_.at(file_id).get() : nullptr;
@@ -277,6 +278,8 @@ class WebFileSystem : public duckdb::FileSystem {
    protected:
     /// Return the name of the filesytem. Used for forming diagnosis messages.
     std::string GetName() const override;
+    /// Write the s3 config to a rapidJSON value
+    static rapidjson::Value writeS3Config(std::shared_ptr<WebDBConfig> config, rapidjson::Document::AllocatorType allocator);
 };
 
 }  // namespace io
