@@ -45,14 +45,15 @@ WebDBConfig WebDBConfig::ReadFrom(std::string_view args_json) {
                 .cast_duration_to_time64 = true,
                 .cast_decimal_to_double = std::nullopt,
             },
-        .filesystem = FileSystemConfig{
-            .allow_full_http_reads = std::nullopt,
-            .s3_region = "",
-            .s3_endpoint = "",
-            .s3_access_key_id = "",
-            .s3_secret_access_key = "",
-            .s3_session_token = "",
-        },
+        .filesystem =
+            FileSystemConfig{
+                .allow_full_http_reads = std::nullopt,
+                .s3_region = "",
+                .s3_endpoint = "",
+                .s3_access_key_id = "",
+                .s3_secret_access_key = "",
+                .s3_session_token = "",
+            },
     };
     rapidjson::Document doc;
     rapidjson::ParseResult ok = doc.Parse(args_json.begin(), args_json.size());

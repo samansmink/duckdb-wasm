@@ -26,12 +26,7 @@ namespace io {
 class WebFileSystem : public duckdb::FileSystem {
    public:
     /// The data protocol
-    enum DataProtocol : uint8_t {
-        BUFFER = 0,
-        NATIVE = 1,
-        HTTP = 3,
-        S3 = 4
-    };
+    enum DataProtocol : uint8_t { BUFFER = 0, NATIVE = 1, HTTP = 3, S3 = 4 };
 
     /// A simple buffer.
     /// It might be worth to make this chunked eventually.
@@ -279,7 +274,8 @@ class WebFileSystem : public duckdb::FileSystem {
     /// Return the name of the filesytem. Used for forming diagnosis messages.
     std::string GetName() const override;
     /// Write the s3 config to a rapidJSON value
-    static rapidjson::Value writeS3Config(std::shared_ptr<WebDBConfig> config, rapidjson::Document::AllocatorType allocator);
+    static rapidjson::Value writeS3Config(std::shared_ptr<WebDBConfig> config,
+                                          rapidjson::Document::AllocatorType allocator);
 };
 
 }  // namespace io
